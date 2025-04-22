@@ -57,13 +57,15 @@ def predicted_value(patient_symptoms):
 
 @app.route('/')
 def root():
-    return redirect(url_for('login'))
-
-@app.route('/index')
-def index():
     if 'logged_in' not in session:
         return redirect(url_for('login'))
-    return render_template('index.html')
+    return redirect(url_for('result'))
+
+@app.route('/result')
+def result():
+    if 'logged_in' not in session:
+        return redirect(url_for('login'))
+    return render_template('result.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

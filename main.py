@@ -56,6 +56,10 @@ def predicted_value(patient_symptoms):
 # Routes
 
 @app.route('/')
+def root():
+    return redirect(url_for('login'))
+
+@app.route('/index')
 def index():
     if 'logged_in' not in session:
         return redirect(url_for('login'))

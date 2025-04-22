@@ -31,10 +31,13 @@ symptoms_list_processed = {symptom.replace('_', ' ').lower(): value for symptom,
 
 # Function to correct symptom spelling
 def correct_spelling(symptom):
-    closest_match, score = process.extractOne(symptom.lower(), symptoms_list_processed.keys())
-    if score >= 80:
-        return closest_match
-    return None
+    matches = process.extractBests(symptom.lower(), symptoms_list_processed.keys(), score_cutoff=60, limit=3)
+    if not matches:
+        return None, []
+    best_match = matches[0]
+    if best_match[1] >= 80:
+        return best_match[0], [m[0] for m in matches[1:]]
+    return None, [m[0] for m in matches]
 
 # Function to get additional info
 def information(predicted_dis):
@@ -103,12 +106,23 @@ def predict():
 
     patient_symptoms = [s.strip().lower() for s in symptoms_input.split(',')]
     corrected_symptoms = []
+    suggestions = {}
+    
     for symptom in patient_symptoms:
-        corrected = correct_spelling(symptom)
+        corrected, similar = correct_spelling(symptom)
         if corrected:
             corrected_symptoms.append(corrected)
         else:
-            return render_template('index.html', message=f"Symptom '{symptom}' not found.")
+            suggestions[symptom] = similar
+            if not similar:
+                return render_template('index.html', 
+                    message=f"Symptom '{symptom}' not found.",
+                    suggestions=suggestions)
+    
+    if suggestions:
+        return render_template('index.html',
+            message="Some symptoms were not recognized. Did you mean:",
+            suggestions=suggestions)
 
     predicted_disease = predicted_value(corrected_symptoms)
     desc, precs, meds, diet, workout_routine = information(predicted_disease)

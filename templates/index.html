@@ -4,6 +4,16 @@
 <body>
     <h2>Disease Prediction System</h2>
     {% if message %}<p style="color:red;">{{ message }}</p>{% endif %}
+    {% if suggestions %}
+        {% for symptom, similars in suggestions.items() %}
+            <p>For "{{ symptom }}", did you mean:</p>
+            <ul>
+            {% for similar in similars %}
+                <li>{{ similar }}</li>
+            {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
     <form action="/predict" method="POST">
         <label>Enter symptoms (comma separated):</label><br>
         <input type="text" name="symptoms" placeholder="e.g. headache, fever, cough" required><br>

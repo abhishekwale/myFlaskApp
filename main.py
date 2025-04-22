@@ -57,10 +57,10 @@ def predicted_value(patient_symptoms):
 
 @app.route('/')
 def root():
-    return "Hello, World!:"    
-    #if 'logged_in' not in session:
-     #   return redirect(url_for('login'))
-    #return redirect(url_for('result'))
+    
+    if 'logged_in' not in session:
+        return redirect(url_for('login'))
+    return redirect(url_for('result'))
 
 @app.route('/result')
 def result():
@@ -115,4 +115,4 @@ def predict():
                            workout=workout_routine)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

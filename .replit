@@ -21,3 +21,7 @@ args = "pip install flask"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
+
+[[ports]]
+localPort = 81
+externalPort = 80

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>Prediction Result</title></head>
+<body>
+    <h2>Disease Predicted: {{ disease }}</h2>
+    <p><strong>Description:</strong> {{ description }}</p>
+
+    <h3>Precautions</h3>
+    <ul>
+        {% for p in precautions[0] %}
+            <li>{{ p }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Medications</h3>
+    <ul>
+        {% for m in medications %}
+            <li>{{ m }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Diet</h3>
+    <ul>
+        {% for d in diet %}
+            <li>{{ d }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Workout</h3>
+    <ul>
+        {% for w in workout %}
+            <li>{{ w }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('index') }}">Go Back</a>
+</body>
+</html>

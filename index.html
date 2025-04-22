@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>Disease Predictor</title></head>
+<body>
+    <h2>Disease Prediction System</h2>
+    {% if message %}<p style="color:red;">{{ message }}</p>{% endif %}
+    <form action="/predict" method="POST">
+        <label>Enter symptoms (comma separated):</label><br>
+        <input type="text" name="symptoms" placeholder="e.g. headache, fever, cough" required><br>
+        <button type="submit">Predict</button>
+    </form>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>

@@ -86,6 +86,12 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('login'))
 
+@app.route('/index')
+def index():
+    if 'logged_in' not in session:
+        return redirect(url_for('login'))
+    return render_template('index.html')
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'logged_in' not in session:

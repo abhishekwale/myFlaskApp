@@ -57,9 +57,10 @@ def predicted_value(patient_symptoms):
 
 @app.route('/')
 def root():
-    if 'logged_in' not in session:
-        return redirect(url_for('login'))
-    return redirect(url_for('result'))
+    return "Hello, World!:"    
+    #if 'logged_in' not in session:
+     #   return redirect(url_for('login'))
+    #return redirect(url_for('result'))
 
 @app.route('/result')
 def result():

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+ 
+ 
+  <link rel="stylesheet" href="/static/log.css">
+
+</head>
+<body>
+  <div class="gradient-bg"></div>
+  <div class="floating-shape shape-1"></div>
+  <div class="floating-shape shape-2"></div>
+
+  <div class="container">
+    <a href="/" class="back-button">
+      ← Back to Home
+    </a>
+
+    <div class="toggle-container">
+      <button class="toggle-btn active" onclick="toggleForm('user')">User Login</button>
+      <button class="toggle-btn" onclick="toggleForm('doctor')">Doctor Login</button>
+    </div>
+
+    <!-- User Login Form -->
+    <form id="userForm" class="login-form">
+      <h2 class="form-title">Welcome Back</h2>
+      <p class="form-subtitle">Please enter your details to sign in</p>
+
+      <div class="form-group">
+        <label for="email">email</label>
+        <input type="text" id="email" name="email" placeholder="email " required/>
+      </div>
+
+      <div class="form-group">
+        <label for="userPassword">Password</label>
+        <input type="password" id="userPassword" name="password" placeholder="Password" required/>
+      </div>
+
+      <div>
+        <button type="button" class="submit-btn" onclick="window.location.href='/signup'">
+          Create New Account
+        </button>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        Sign In
+      </button>
+    </form>
+
+    <!-- Doctor Login Form -->
+    <form id="doctorForm" class="login-form" style="display:none;">
+      <h2 class="form-title">Doctor Portal</h2>
+      <p class="form-subtitle">Access the doctor dashboard</p>
+
+      <div class="form-group">
+        <label for="doctorUsername">Username</label>
+        <input type="text" id="doctorUsername" name="username" placeholder="Enter doctor username" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="doctorPassword">Password</label>
+        <input type="password" id="doctorPassword" name="password" placeholder="Enter doctor password" required/>
+      </div>
+
+      <div>
+        <button type="button" class="submit-btn" onclick="window.location.href='/signup'">
+          Create New Account
+        </button>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        Access Dashboard
+      </button>
+    </form>
+  </div>
+
+  <script>
+    function toggleForm(formType) {
+      const userForm = document.getElementById('userForm');
+      const doctorForm = document.getElementById('doctorForm');
+      const toggleBtns = document.querySelectorAll('.toggle-btn');
+
+      toggleBtns.forEach(btn => btn.classList.remove('active'));
+
+      if (formType === 'user') {
+        userForm.style.display = 'block';
+        doctorForm.style.display = 'none';
+        toggleBtns[0].classList.add('active');
+      } else {
+        userForm.style.display = 'none';
+        doctorForm.style.display = 'block';
+        toggleBtns[1].classList.add('active');
+      }
+    }
+
+    document.getElementById('userForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('userPassword').value;
+
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        window.location.href = '/dashboard';
+      } else {
+        alert(data.message);
+      }
+    });
+
+    document.getElementById('doctorForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('doctorUsername').value;
+      const password = document.getElementById('doctorPassword').value;
+
+      const response = await fetch('/doctor_login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        window.location.href = '/doctor_dashboard';
+      } else {
+        alert(data.message);
+      }
+    });
+  </script>
+</body>
+</html>
